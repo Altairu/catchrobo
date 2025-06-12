@@ -88,5 +88,23 @@
 ros2 run catchrobo_pkg <ノード名>
 ```
 
+すべてのノードを一括で起動するには、以下のコマンドを使用します。
+```bash
+ros2 launch catchrobo_pkg catchrobo_launch.xml
+```
+
+### 一括ビルドと起動
+以下のスクリプトを使用して、アンダーレイ設定、オーバーレイ設定、ビルド、そしてすべてのノードの起動を一括で行うことができます。
+
+1. スクリプトに実行権限を付与します。
+```bash
+chmod +x src/catchrobo_pkg/setup_and_launch.sh
+```
+
+2. スクリプトを実行します。
+```bash
+./src/catchrobo_pkg/setup_and_launch.sh
+```
+
 ## ライセンス
 このパッケージは、適切なライセンスの下で提供されます。詳細は`LICENSE`ファイルを参照してください。
