@@ -5,45 +5,35 @@
 
 ## ノード一覧
 
-### 1. angle_tracker
-- **説明**: ロボマスモーターの角度を管理します。
-- **主な機能**:
-  - 無限角度の計測
-  - 生角度と累積角度の取得
-- **使用例**:
-  ```python
-  tracker = RobomasterAngleTracker()
-  tracker.update(raw_angle=1000)
-  print(tracker.get_angle())
-  ```
-
-### 2. can_node
+### 1. can_node
 - **説明**: マイコンやロボマスモーターとCAN通信を行います。
 - **主な機能**:
   - データの送受信
   - デバッグ情報の処理
+  - リミットスイッチの状態をトピックで送信
 - **使用例**:
   ```python
   can_node = CANNode()
   can_node.send_data(0x200, [0x01, 0x02, 0x03])
   ```
 
-### 3. pid_node
+### 2. pid_node
 - **説明**: ロボマスモーターのPID制御を行います。
 - **主な機能**:
   - 比例ゲインと不感帯の設定
   - トルク値の計算
+  - PID現在値のトピック受信
 - **使用例**:
   ```python
-  pid_node = PIDNode(kp=1.0, dead_zone=10)
+  pid_node = PIDNode()
   pid_node.set_target(100)
-  torque = pid_node.control(50)
   ```
 
-### 4. planning_node
+### 3. planning_node
 - **説明**: ロボットの自動制御を行います。
 - **主な機能**:
   - 動作番号と特別動作番号に基づく制御
+  - リミットスイッチの状態を利用した制御
 - **使用例**:
   ```python
   planning_node = PlanningNode()
@@ -51,7 +41,7 @@
   planning_node.execute_action()
   ```
 
-### 5. web_socket_node
+### 4. web_socket_node
 - **説明**: WebSocket通信を行い、特別動作番号を操作します。
 - **主な機能**:
   - スマートフォンとPC間の通信
@@ -61,7 +51,7 @@
   node.start_server()
   ```
 
-### 6. dualshock3_node
+### 5. dualshock3_node
 - **説明**: DualShock3コントローラを使用して動作番号を操作します。
 - **主な機能**:
   - ボタン操作による動作番号の増減
