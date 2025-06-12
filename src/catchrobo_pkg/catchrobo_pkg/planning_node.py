@@ -19,69 +19,55 @@ class PlanningNode(Node):
         self.special_action_number = 0
         self.can_node = CANNode()
 
-        # PID制御出力を受け取るためのサブスクライバ
-        self.subscription = self.create_subscription(
+        # PID制御用の目標値を送信するパブリッシャ
+        self.target_publisher = self.create_publisher(
             Int32MultiArray,
-            'pid_output',
-            self.pid_output_callback,
+            'target_values',
             10
         )
 
-        # PID制御出力の初期値
-        self.pid_output = [0, 0, 0, 0, 0]  # ロボマス1～5のPID出力
-
         # タイマーの実行速度を高速化
         self.timer = self.create_timer(0.01, self.timer_callback)  # 10ms間隔
-
-    def pid_output_callback(self, msg):
-        """
-        PID制御出力を受け取るコールバック関数。
-        """
-        self.pid_output = msg.data
 
     def timer_callback(self):
         """
         動作番号と特別動作番号に基づきロボットを制御します。
         """
-        if self.special_action_number != 0:
-            self.execute_special_action()
-        else:
-            self.execute_action()
+        target_values = Int32MultiArray()
 
-    def execute_action(self):
-        """
-        動作番号に基づきロボットを制御します。
-        """
         if self.action_number == 0:
             self.get_logger().info("停止")
-            self.can_node.send_data(0x200, [0, 0, 0, 0, 0, 0])  # ロボマス
+            target_values.data = [0, 0, 0, 0, 0]  # ロボマス
             self.can_node.send_data(0x100, [0, 0, 0, 0, 0, 0])  # モーター
             self.can_node.send_data(0x300, [0, 0, 0, 0, 0, 0])  # サーボ1～6
             self.can_node.send_data(0x301, [0, 0, 0, 0, 0, 0])  # サーボ7～12
         elif self.action_number == 1:
             self.get_logger().info("初期状態: CAN通信開始")
-            self.can_node.send_data(0x200, [0, 0, 0, 0, 0, 0])
-            self.can_node.send_data(0x100, [0, 0, 0, 0, 0, 0])
-            self.can_node.send_data(0x300, [0, 0, 0, 0, 0, 0])
-            self.can_node.send_data(0x301, [0, 0, 0, 0, 0, 0])
+            target_values.data = [0, 0, 0, 0, 0]  # ロボマス
+            self.can_node.send_data(0x100, [0, 0, 0, 0, 0, 0])  # モーター
+            self.can_node.send_data(0x300, [0, 0, 0, 0, 0, 0])  # サーボ1～6
+            self.can_node.send_data(0x301, [0, 0, 0, 0, 0, 0])  # サーボ7～12
         elif self.action_number == 2:
-            self.get_logger().info("ベルト動作開始: ロボマス4 PID制御出力を適用")
-            self.can_node.send_data(0x200, [self.pid_output[0], self.pid_output[1], self.pid_output[2], self.pid_output[3], self.pid_output[4], 0])
-            self.can_node.send_data(0x100, [0, 0, 0, 0, 0, 0])
-            self.can_node.send_data(0x300, [0, 0, 0, 0, 0, 0])
-            self.can_node.send_data(0x301, [0, 0, 0, 0, 0, 0])
+            self.get_logger().info("ベルト動作開始: ロボマス4 目標[100RPM]")
+            target_values.data = [0, 0, 0, 100, 0]  # ロボマス
+            self.can_node.send_data(0x100, [0, 0, 0, 0, 0, 0])  # モーター
+            self.can_node.send_data(0x300, [0, 0, 0, 0, 0, 0])  # サーボ1～6
+            self.can_node.send_data(0x301, [0, 0, 0, 0, 0, 0])  # サーボ7～12
         elif self.action_number == 3:
             self.get_logger().info("ベルト停止: ロボマス4 目標値0")
-            self.can_node.send_data(0x200, [0, 0, 0, 0, 0, 0])
-            self.can_node.send_data(0x100, [0, 0, 0, 0, 0, 0])
-            self.can_node.send_data(0x300, [0, 0, 0, 0, 0, 0])
-            self.can_node.send_data(0x301, [0, 0, 0, 0, 0, 0])
+            target_values.data = [0, 0, 0, 0, 0]  # ロボマス
+            self.can_node.send_data(0x100, [0, 0, 0, 0, 0, 0])  # モーター
+            self.can_node.send_data(0x300, [0, 0, 0, 0, 0, 0])  # サーボ1～6
+            self.can_node.send_data(0x301, [0, 0, 0, 0, 0, 0])  # サーボ7～12
         else:
             self.get_logger().info("未定義の動作番号")
-            self.can_node.send_data(0x200, [0, 0, 0, 0, 0, 0])
-            self.can_node.send_data(0x100, [0, 0, 0, 0, 0, 0])
-            self.can_node.send_data(0x300, [0, 0, 0, 0, 0, 0])
-            self.can_node.send_data(0x301, [0, 0, 0, 0, 0, 0])
+            target_values.data = [0, 0, 0, 0, 0]  # ロボマス
+            self.can_node.send_data(0x100, [0, 0, 0, 0, 0, 0])  # モーター
+            self.can_node.send_data(0x300, [0, 0, 0, 0, 0, 0])  # サーボ1～6
+            self.can_node.send_data(0x301, [0, 0, 0, 0, 0, 0])  # サーボ7～12
+
+        # 目標値をPIDノードに送信
+        self.target_publisher.publish(target_values)
 
     def execute_special_action(self):
         """
