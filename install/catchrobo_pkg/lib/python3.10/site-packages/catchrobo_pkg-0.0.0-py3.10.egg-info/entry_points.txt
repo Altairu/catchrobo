@@ -1,0 +1,2 @@
+[console_scripts]
+can_node = catchrobo_pkg.can_node:main
