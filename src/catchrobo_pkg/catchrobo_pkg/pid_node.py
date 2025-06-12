@@ -19,11 +19,11 @@ class PIDNode(Node):
 
         # 各ロボマスモーターのPIDコントローラを初期化
         self.controllers = {
-            1: {'kp': 1.0, 'dead_zone': 10, 'target': 0},
-            2: {'kp': 1.2, 'dead_zone': 15, 'target': 0},
-            3: {'kp': 1.5, 'dead_zone': 20, 'target': 0},
-            4: {'kp': 0.8, 'dead_zone': 5, 'target': 0},
-            5: {'kp': 1.1, 'dead_zone': 12, 'target': 0},
+            1: {'kp': 10.0, 'dead_zone': 100, 'target': 0},
+            2: {'kp': 10.0, 'dead_zone': 100, 'target': 0},
+            3: {'kp': 10.0, 'dead_zone': 100, 'target': 0},
+            4: {'kp': 10.0, 'dead_zone': 100, 'target': 0},
+            5: {'kp': 10.0, 'dead_zone': 100, 'target': 0},
         }
 
         self.can_node = CANNode()
@@ -36,8 +36,19 @@ class PIDNode(Node):
             10
         )
 
+        # PID現在値を受信するためのサブスクライバ
+        self.current_subscription = self.create_subscription(
+            Int32MultiArray,
+            'pid_current_values',
+            self.current_callback,
+            10
+        )
+
         # タイマーの実行速度を高速化
         self.timer = self.create_timer(0.01, self.timer_callback)  # 10ms間隔
+
+        # PID現在値の初期化
+        self.current_values = [0, 0, 0, 0, 0]
 
     def target_callback(self, msg):
         """
@@ -47,14 +58,19 @@ class PIDNode(Node):
             if i in self.controllers:
                 self.controllers[i]['target'] = target
 
+    def current_callback(self, msg):
+        """
+        PID現在値を受信するコールバック関数。
+        """
+        self.current_values = msg.data
+
     def timer_callback(self):
         """
         PID制御を実行し、CAN通信で制御出力を送信します。
         """
         outputs = []
         for motor_id, params in self.controllers.items():
-            # 現在の値を仮に0とする（実際にはセンサーデータを取得）
-            current_value = 0
+            current_value = self.current_values[motor_id - 1]  # 現在値を取得
 
             # 誤差計算
             error = params['target'] - current_value
@@ -65,7 +81,7 @@ class PIDNode(Node):
             else:
                 # P制御
                 output = int(params['kp'] * error)
-                output = max(min(output, 16384), -16384)  # 飽和制限
+                output = max(min(output, 3000), -3000)  # 飽和制限を+-3000に変更
 
             outputs.append(output)
 
