@@ -3,6 +3,8 @@
 ロボマスモーターやマイコンと通信し、データの送受信を管理します。
 """
 
+import struct
+
 from .angle_tracker import RobomasterAngleTracker
 
 
@@ -16,10 +18,10 @@ class CANNode:
         CAN通信でデータを送信します。
 
         :param id: CAN ID
-        :param data: 送信するデータ
+        :param data: 送信するデータ（リスト形式）
         """
-        # 送信処理（仮実装）
-        print(f"Sending data to ID {id}: {data}")
+        # 実際のCAN通信送信処理をここに実装
+        print(f"[CAN送信] ID: {id}, データ: {data}")
 
     def receive_data(self, id):
         """
@@ -28,7 +30,7 @@ class CANNode:
         :param id: CAN ID
         :return: 受信したデータ
         """
-        # 受信処理（仮実装）
+        # 実際のCAN通信受信処理をここに実装
         return self.data.get(id, None)
 
     def process_debug_info(self, id, raw_data):
@@ -38,8 +40,9 @@ class CANNode:
         :param id: CAN ID
         :param raw_data: 受信した生データ
         """
-        # デバッグ情報の処理（仮実装）
-        print(f"Processing debug info for ID {id}: {raw_data}")
+        # デバッグ情報の処理
+        angle, rpm, current, temperature = struct.unpack('>HHHH', raw_data[:8])
+        print(f"[デバッグ情報] ID: {id}, 角度: {angle}, RPM: {rpm}, 電流: {current}, 温度: {temperature}")
 
 
 def main():

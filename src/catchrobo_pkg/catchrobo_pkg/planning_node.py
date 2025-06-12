@@ -5,6 +5,8 @@
 
 import rclpy
 from rclpy.node import Node
+from std_msgs.msg import Int32MultiArray
+from .can_node import CANNode
 
 
 class PlanningNode(Node):
@@ -15,55 +17,103 @@ class PlanningNode(Node):
         # 動作番号と特別動作番号の初期化
         self.action_number = 0
         self.special_action_number = 0
+        self.can_node = CANNode()
+
+        # PID制御出力を受け取るためのサブスクライバ
+        self.subscription = self.create_subscription(
+            Int32MultiArray,
+            'pid_output',
+            self.pid_output_callback,
+            10
+        )
+
+        # PID制御出力の初期値
+        self.pid_output = [0, 0, 0, 0, 0]  # ロボマス1～5のPID出力
+
+        # タイマーの実行速度を高速化
+        self.timer = self.create_timer(0.01, self.timer_callback)  # 10ms間隔
+
+    def pid_output_callback(self, msg):
+        """
+        PID制御出力を受け取るコールバック関数。
+        """
+        self.pid_output = msg.data
+
+    def timer_callback(self):
+        """
+        動作番号と特別動作番号に基づきロボットを制御します。
+        """
+        if self.special_action_number != 0:
+            self.execute_special_action()
+        else:
+            self.execute_action()
 
     def execute_action(self):
         """
         動作番号に基づきロボットを制御します。
         """
         if self.action_number == 0:
-            print("停止")
+            self.get_logger().info("停止")
+            self.can_node.send_data(0x200, [0, 0, 0, 0, 0, 0])  # ロボマス
+            self.can_node.send_data(0x100, [0, 0, 0, 0, 0, 0])  # モーター
+            self.can_node.send_data(0x300, [0, 0, 0, 0, 0, 0])  # サーボ1～6
+            self.can_node.send_data(0x301, [0, 0, 0, 0, 0, 0])  # サーボ7～12
         elif self.action_number == 1:
-            print("初期状態: CAN通信開始")
+            self.get_logger().info("初期状態: CAN通信開始")
+            self.can_node.send_data(0x200, [0, 0, 0, 0, 0, 0])
+            self.can_node.send_data(0x100, [0, 0, 0, 0, 0, 0])
+            self.can_node.send_data(0x300, [0, 0, 0, 0, 0, 0])
+            self.can_node.send_data(0x301, [0, 0, 0, 0, 0, 0])
         elif self.action_number == 2:
-            print("ベルト動作開始: ロボマス4 目標[100RPM]")
+            self.get_logger().info("ベルト動作開始: ロボマス4 PID制御出力を適用")
+            self.can_node.send_data(0x200, [self.pid_output[0], self.pid_output[1], self.pid_output[2], self.pid_output[3], self.pid_output[4], 0])
+            self.can_node.send_data(0x100, [0, 0, 0, 0, 0, 0])
+            self.can_node.send_data(0x300, [0, 0, 0, 0, 0, 0])
+            self.can_node.send_data(0x301, [0, 0, 0, 0, 0, 0])
         elif self.action_number == 3:
-            print("ベルト停止: ロボマス4 目標値0")
+            self.get_logger().info("ベルト停止: ロボマス4 目標値0")
+            self.can_node.send_data(0x200, [0, 0, 0, 0, 0, 0])
+            self.can_node.send_data(0x100, [0, 0, 0, 0, 0, 0])
+            self.can_node.send_data(0x300, [0, 0, 0, 0, 0, 0])
+            self.can_node.send_data(0x301, [0, 0, 0, 0, 0, 0])
         else:
-            print("未定義の動作番号")
+            self.get_logger().info("未定義の動作番号")
+            self.can_node.send_data(0x200, [0, 0, 0, 0, 0, 0])
+            self.can_node.send_data(0x100, [0, 0, 0, 0, 0, 0])
+            self.can_node.send_data(0x300, [0, 0, 0, 0, 0, 0])
+            self.can_node.send_data(0x301, [0, 0, 0, 0, 0, 0])
 
     def execute_special_action(self):
         """
         特別動作番号に基づきロボットを制御します。
         """
-        if self.special_action_number == 0:
-            print("通常状態")
-        elif self.special_action_number == 1:
-            print("妨害機構展開")
+        if self.special_action_number == 1:
+            self.get_logger().info("妨害機構展開: サーボ1 [10度]")
+            self.can_node.send_data(0x300, [10, 0, 0, 0, 0, 0])
         elif self.special_action_number == 2:
-            print("妨害機構収納")
+            self.get_logger().info("妨害機構収納: サーボ1 [0度]")
+            self.can_node.send_data(0x300, [0, 0, 0, 0, 0, 0])
         elif self.special_action_number == 3:
-            print("緊急非常停止（初期化）")
+            self.get_logger().info("緊急非常停止（初期化）")
+            self.can_node.send_data(0x200, [0, 0, 0, 0, 0, 0])
+            self.can_node.send_data(0x100, [0, 0, 0, 0, 0, 0])
+            self.can_node.send_data(0x300, [0, 0, 0, 0, 0, 0])
+            self.can_node.send_data(0x301, [0, 0, 0, 0, 0, 0])
         elif self.special_action_number == 4:
-            print("緊急非常停止（CAN通信の停止）")
+            self.get_logger().info("緊急非常停止（CAN通信の停止）")
+            self.can_node.send_data(0x200, [0, 0, 0, 0, 0, 0])
         else:
-            print("未定義の特別動作番号")
+            self.get_logger().info("未定義の特別動作番号")
+            self.can_node.send_data(0x200, [0, 0, 0, 0, 0, 0])
 
 
-def main() -> None:
-    """ノードエントリポイント."""
-    rclpy.init()
+def main(args=None):
+    rclpy.init(args=args)
     node = PlanningNode()
-    try:
-        rclpy.spin(node)
-    finally:
-        node.destroy_node()
-        rclpy.shutdown()
+    rclpy.spin(node)
+    node.destroy_node()
+    rclpy.shutdown()
 
 
-# 使用例
 if __name__ == "__main__":
-    planning_node = PlanningNode()
-    planning_node.action_number = 2
-    planning_node.execute_action()
-    planning_node.special_action_number = 1
-    planning_node.execute_special_action()
+    main()
