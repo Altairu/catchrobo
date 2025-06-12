@@ -1,45 +1,79 @@
-"""DualShock3コントローラ用ノード."""
+# -*- coding: utf-8 -*-
+"""
+DualShock3コントローラを使用して動作番号を操作するノード。
+"""
 
 import os
 
 import rclpy
 from rclpy.node import Node
+from std_msgs.msg import Int32
 import pygame
 
 
 class DualShock3Node(Node):
-    """DualShock3から入力を取得するノード."""
-
-    def __init__(self) -> None:
+    def __init__(self):
+        """
+        初期化処理。
+        """
         super().__init__('dualshock3_node')
-        os.environ['SDL_JOYSTICK_DEVICE'] = '/dev/input/js0'
+        self.publisher_ = self.create_publisher(Int32, 'action_number', 10)
+        os.environ["SDL_JOYSTICK_DEVICE"] = "/dev/input/js0"
         pygame.init()
         pygame.joystick.init()
+
         if pygame.joystick.get_count() > 0:
             self.joystick = pygame.joystick.Joystick(0)
             self.joystick.init()
+            self.get_logger().info(f"Joystick initialized: {self.joystick.get_name()}")
         else:
-            self.joystick = None
-            self.get_logger().error('ジョイスティックが見つかりません')
-        self.timer = self.create_timer(0.1, self.timer_callback)
+            self.get_logger().error("No joystick found")
 
-    def timer_callback(self) -> None:
-        """定期処理で軸の値を表示する."""
-        if self.joystick:
-            pygame.event.pump()
-            axis0 = self.joystick.get_axis(0)
-            self.get_logger().info(f'axis0: {axis0:.2f}')
+        self.action_number = 0  # 初期値を設定
+        self.button_states = [False, False]  # 丸ボタンと四角ボタンの状態を保持
+        self.timer = self.create_timer(0.01, self.timer_callback)  # 10msに一回
+
+    def timer_callback(self):
+        """
+        タイマーコールバックでボタンの状態を監視します。
+        """
+        pygame.event.pump()
+
+        # 丸ボタン
+        if self.joystick.get_button(1):
+            if not self.button_states[0]:
+                self.button_states[0] = True
+        else:
+            if self.button_states[0]:
+                self.action_number += 1
+                self.button_states[0] = False
+
+        # 四角ボタン
+        if self.joystick.get_button(3):
+            if not self.button_states[1]:
+                self.button_states[1] = True
+        else:
+            if self.button_states[1]:
+                self.action_number -= 1
+                self.button_states[1] = False
+
+        # 動作番号をパブリッシュ
+        msg = Int32()
+        msg.data = self.action_number
+        self.publisher_.publish(msg)
+
+        self.get_logger().info(f"Action Number: {self.action_number}")
 
 
-def main() -> None:
-    """ノードエントリポイント."""
-    rclpy.init()
+def main(args=None):
+    """
+    ノードのエントリポイント。
+    """
+    rclpy.init(args=args)
     node = DualShock3Node()
-    try:
-        rclpy.spin(node)
-    finally:
-        node.destroy_node()
-        rclpy.shutdown()
+    rclpy.spin(node)
+    node.destroy_node()
+    rclpy.shutdown()
 
 
 if __name__ == '__main__':

@@ -1,50 +1,48 @@
-"""WebSocket通信を行うノード."""
+# -*- coding: utf-8 -*-
+"""
+WebSocket通信を行うノード。
+スマートフォンとPC間で通信を行い、特別動作番号を操作します。
+"""
 
 import asyncio
-
-import rclpy
-from rclpy.node import Node
-
-try:
-    import websockets
-except ImportError:  # websocketsがない環境向け
-    websockets = None
+import websockets
 
 
-class WebSocketNode(Node):
-    """スマートフォンと通信するためのノード."""
+class WebSocketNode:
+    def __init__(self, host="localhost", port=8765):
+        """
+        初期化処理。
 
-    def __init__(self) -> None:
-        super().__init__('web_socket_node')
-        self.server = None
+        :param host: ホスト名
+        :param port: ポート番号
+        """
+        self.host = host
+        self.port = port
+        self.special_action_number = 0
 
-    async def handler(self, websocket, path) -> None:
-        """メッセージ受信時の処理."""
+    async def handler(self, websocket, path):
+        """
+        WebSocketのハンドラ。
+
+        :param websocket: WebSocket接続
+        :param path: 接続パス
+        """
         async for message in websocket:
-            self.get_logger().info(f"受信: {message}")
-            await websocket.send(message)
+            print(f"受信: {message}")
+            self.special_action_number = int(message)
+            await websocket.send(f"特別動作番号を {self.special_action_number} に設定しました。")
 
-    async def start(self) -> None:
-        """WebSocketサーバーを起動する."""
-        if websockets is None:
-            self.get_logger().error('websockets モジュールがありません')
-            return
-        self.server = await websockets.serve(self.handler, '0.0.0.0', 8080)
-        await self.server.wait_closed()
-
-
-def main() -> None:
-    """ノードエントリポイント."""
-    rclpy.init()
-    node = WebSocketNode()
-    loop = asyncio.get_event_loop()
-    try:
-        loop.run_until_complete(node.start())
-    finally:
-        loop.close()
-        node.destroy_node()
-        rclpy.shutdown()
+    def start_server(self):
+        """
+        WebSocketサーバを開始します。
+        """
+        print(f"WebSocketサーバを {self.host}:{self.port} で開始します")
+        start_server = websockets.serve(self.handler, self.host, self.port)
+        asyncio.get_event_loop().run_until_complete(start_server)
+        asyncio.get_event_loop().run_forever()
 
 
-if __name__ == '__main__':
-    main()
+# 使用例
+if __name__ == "__main__":
+    node = WebSocketNode(host="0.0.0.0", port=8080)
+    node.start_server()
