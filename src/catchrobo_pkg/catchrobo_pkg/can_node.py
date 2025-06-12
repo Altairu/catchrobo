@@ -1,6 +1,13 @@
+"""CANノードのサンプル実装."""
+
+from .angle_tracker import RobomasterAngleTracker
+
+
 def main():
-    print('Hi from catchrobo_pkg.')
+    """エントリポイント."""
+    tracker = RobomasterAngleTracker()
+    print(tracker.get_angle())
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
