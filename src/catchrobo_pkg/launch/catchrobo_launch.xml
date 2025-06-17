@@ -1,5 +1,4 @@
 <launch>
-    <node pkg="catchrobo_pkg" exec="angle_tracker" name="angle_tracker" output="screen" />
     <node pkg="catchrobo_pkg" exec="can_node" name="can_node" output="screen" />
     <node pkg="catchrobo_pkg" exec="pid_node" name="pid_node" output="screen" />
     <node pkg="catchrobo_pkg" exec="planning_node" name="planning_node" output="screen" />

@@ -10,6 +10,7 @@
             text-align: center;
             margin: 0;
             padding: 0;
+            background-color: #f4f4f4;
         }
         .container {
             padding: 20px;
@@ -39,9 +40,31 @@
         .status.disconnected {
             color: red;
         }
-        .info {
+        .info-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
             margin-top: 20px;
+        }
+        .info-card {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 10px;
+            padding: 15px;
+            width: 250px;
+            text-align: left;
+        }
+        .info-card h3 {
+            margin: 0;
+            font-size: 18px;
+            color: #333;
+        }
+        .info-card p {
+            margin: 5px 0 0;
             font-size: 16px;
+            color: #555;
         }
     </style>
 </head>
@@ -49,23 +72,35 @@
     <div class="container">
         <h1>Robot Control Panel</h1>
         <div id="buttons">
-            <button class="button" onclick="toggleAction(0)">Action 0</button>
-            <button class="button" onclick="toggleAction(1)">Action 1</button>
-            <button class="button" onclick="toggleAction(2)">Action 2</button>
-            <button class="button" onclick="toggleAction(3)">Action 3</button>
-            <button class="button" onclick="toggleAction(4)">Action 4</button>
+            <button class="button" onclick="sendAction(0)">Action 0</button>
+            <button class="button" onclick="sendAction(1)">Action 1</button>
+            <button class="button" onclick="sendAction(2)">Action 2</button>
+            <button class="button" onclick="sendAction(3)">Action 3</button>
+            <button class="button" onclick="sendAction(4)">Action 4</button>
         </div>
         <div class="status" id="status">Status: Disconnected</div>
-        <div class="info" id="currentAction">Current Action: None</div>
-        <div class="info" id="specialAction">Special Action: None</div>
-        <div class="info" id="signalStrength">Signal Strength: Unknown</div>
-        <div class="info" id="actionDescription">Action Description: None</div>
+        <div class="info-container">
+            <div class="info-card">
+                <h3>Current Action</h3>
+                <p id="currentAction">None</p>
+            </div>
+            <div class="info-card">
+                <h3>Special Action</h3>
+                <p id="specialAction">None</p>
+            </div>
+            <div class="info-card">
+                <h3>Signal Strength</h3>
+                <p id="signalStrength">Unknown</p>
+            </div>
+            <div class="info-card">
+                <h3>Action Description</h3>
+                <p id="actionDescription">None</p>
+            </div>
+        </div>
     </div>
 
     <script>
         let websocket;
-        let currentAction = null;
-        let specialAction = null;
         const actionDescriptions = [
             "Description for Action 0",
             "Description for Action 1",
@@ -75,7 +110,7 @@
         ];
 
         function connectWebSocket() {
-            websocket = new WebSocket("ws://192.168.11.47:8080/ws");
+            websocket = new WebSocket("ws://192.168.85.216:8080/ws");
 
             websocket.onopen = function () {
                 document.getElementById('status').innerText = "Status: Connected";
@@ -89,22 +124,16 @@
 
             websocket.onmessage = function (event) {
                 const data = event.data.split(",");
-                document.getElementById('currentAction').innerText = `Current Action: ${data[0]}`;
-                document.getElementById('specialAction').innerText = `Special Action: ${data[1]}`;
-                document.getElementById('signalStrength').innerText = `Signal Strength: ${data[2]}`;
-                document.getElementById('actionDescription').innerText = `Action Description: ${actionDescriptions[data[0]] || "None"}`;
+                document.getElementById('currentAction').innerText = data[0] || "None";
+                document.getElementById('specialAction').innerText = data[1] || "None";
+                document.getElementById('signalStrength').innerText = data[2] || "Unknown";
+                document.getElementById('actionDescription').innerText = actionDescriptions[data[0]] || "None";
             };
         }
 
-        function toggleAction(actionNumber) {
-            if (currentAction === actionNumber) {
-                currentAction = null;
-            } else {
-                currentAction = actionNumber;
-            }
-
+        function sendAction(actionNumber) {
             if (websocket && websocket.readyState === WebSocket.OPEN) {
-                websocket.send(currentAction !== null ? currentAction.toString() : "None");
+                websocket.send(actionNumber.toString());
             }
         }
 

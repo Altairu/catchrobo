@@ -17,7 +17,9 @@ setup(
     maintainer_email='106.nogu@gmail.com',
     description='TODO: Package description',
     license='TODO: License declaration',
-    tests_require=['pytest'],
+    extras_require={
+        'tests': ['pytest'],
+    },
     entry_points={
         'console_scripts': [
             'can_node = catchrobo_pkg.can_node:main',
