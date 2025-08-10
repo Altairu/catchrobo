@@ -59,6 +59,14 @@ ros2 run catchrobo_pkg <ノード名>
 ros2 launch catchrobo_pkg catchrobo_launch.xml
 ```
 
+## 一括セットアップスクリプト
+
+ビルドと環境設定をまとめて行うスクリプトを用意しています。  
+必ず `source` で実行してください。  
+```bash
+source src/mio_setup.sh
+```
+
 ### 一括ビルドと起動
 以下のスクリプトを使用して、アンダーレイ設定、オーバーレイ設定、ビルド、そしてすべてのノードの起動を一括で行うことができます。
 

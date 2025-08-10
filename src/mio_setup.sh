@@ -1,6 +1,8 @@
 #!/bin/bash
 
-# ROS 2環境のセットアップ
-colcon build
-source /opt/ros/humble/setup.bash
-source install/setup.bash
+echo "=== CatchRobo: ビルド開始 ==="
+colcon build --symlink-install               # ワークスペースをビルド
+echo "=== CatchRobo: ビルド完了 ==="
+
+echo "=== source /opt/ros/humble/setup.bash   ==="
+echo "source install/setup.bash ==="

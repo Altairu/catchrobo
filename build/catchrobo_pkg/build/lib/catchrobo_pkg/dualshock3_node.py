@@ -18,6 +18,9 @@ class DualShock3Node(Node):
         """
         super().__init__('dualshock3_node')
         self.publisher_ = self.create_publisher(Int32, 'action_number', 10)
+
+        # ジョイスティックの初期化
+        self.joystick = None                                          # ← 追加: 属性を先に定義
         os.environ["SDL_JOYSTICK_DEVICE"] = "/dev/input/js0"
         pygame.init()
         pygame.joystick.init()
@@ -39,6 +42,8 @@ class DualShock3Node(Node):
         """
         タイマーコールバックでボタンの状態を監視します。
         """
+        if self.joystick is None:
+            return                                                 # ← 追加: ジョイスティック未設定時はスキップ
         try:
             pygame.event.pump()
 

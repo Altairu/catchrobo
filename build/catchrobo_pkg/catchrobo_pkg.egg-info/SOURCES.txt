@@ -14,7 +14,11 @@ catchrobo_pkg/dualshock3_node.py
 catchrobo_pkg/pid_node.py
 catchrobo_pkg/planning_node.py
 catchrobo_pkg/web_socket_node.py
+catchrobo_pkg.egg-info/PKG-INFO
+catchrobo_pkg.egg-info/SOURCES.txt
+catchrobo_pkg.egg-info/dependency_links.txt
+catchrobo_pkg.egg-info/entry_points.txt
+catchrobo_pkg.egg-info/requires.txt
+catchrobo_pkg.egg-info/top_level.txt
+catchrobo_pkg.egg-info/zip-safe
 resource/catchrobo_pkg
-test/test_copyright.py
-test/test_flake8.py
-test/test_pep257.py
