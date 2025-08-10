@@ -57,19 +57,7 @@ class CANNode(Node):
             5: self.create_publisher(Int32MultiArray, 'motor_5_mm', 10),
         }
 
-        # 制御量を受信するためのサブスクライバ
-        self.control_subscription = self.create_subscription(
-            Int32MultiArray,
-            'control_values',
-            self.control_callback,
-            10
-        )
-
-        # 送信・受信処理を10ms間隔で実行するタイマー
-        self.timer = self.create_timer(0.01, self.timer_callback)  # 10ms間隔
-
-        # PID制御後の出力を保持するリスト
-        self.pid_outputs = [0] * 5
+        # → PIDノード廃止につきサブスクライバ削除
 
     def create_angle_tracker(self, mm_per_rotation):
         """
@@ -104,20 +92,6 @@ class CANNode(Node):
         tracker["last_raw"] = raw_angle
         return tracker["total_angle"] * tracker["mm_per_rotation"] / 8192
 
-    def update_pid_outputs(self, outputs):
-        """
-        PID制御後の出力を更新します。
-
-        :param outputs: PID制御後の出力リスト
-        """
-        self.pid_outputs = outputs
-
-    def control_callback(self, msg):
-        """
-        制御量を受信するコールバック関数。
-        """
-        self.pid_outputs = msg.data
-
     def receive_data(self):
         """
         CAN通信でデータを受信します。
@@ -141,34 +115,10 @@ class CANNode(Node):
         """
         送信・受信処理を定期的に実行します。
         """
-        try:
-            # CANデータ受信
-            id, data = self.receive_data()
-            if id and data:
-                if id in [0x201, 0x202, 0x203, 0x204, 0x205]:  # デバッグ情報のID
-                    self.process_debug_info(id, data)
-                elif id in [0x300, 0x301]:  # リミットスイッチのID
-                    self.process_limit_switch_data(id, data)
-
-            # モーター1〜4のデータを送信 (ID: 0x200)
-            motor_data_200 = [
-                self.pid_outputs[0] >> 8, self.pid_outputs[0] & 0xFF,  # モーター1
-                self.pid_outputs[1] >> 8, self.pid_outputs[1] & 0xFF,  # モーター2
-                self.pid_outputs[2] >> 8, self.pid_outputs[2] & 0xFF,  # モーター3
-                self.pid_outputs[3] >> 8, self.pid_outputs[3] & 0xFF   # モーター4
-            ]
-            self.send_data(0x200, motor_data_200)
-
-            # モーター5〜8のデータを送信 (ID: 0x1FF)
-            motor_data_1FF = [
-                self.pid_outputs[4] >> 8, self.pid_outputs[4] & 0xFF,  # モーター5
-                0, 0,  # モーター6 (未使用)
-                0, 0,  # モーター7 (未使用)
-                0, 0   # モーター8 (未使用)
-            ]
-            self.send_data(0x1FF, motor_data_1FF)
-        except Exception as e:
-            self.get_logger().error(f"タイマー処理エラー: {e}")
+        # PIDノード廃止：ここでは主に受信データ（リミットスイッチなど）の処理のみを行う
+        id, data = self.receive_data()
+        if id == 0x305:
+            self.process_limit_switch_data(id, data)
 
     def send_data(self, id, data):
         """

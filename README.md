@@ -11,11 +11,6 @@
   - データの送受信
   - デバッグ情報の処理
   - リミットスイッチの状態をトピックで送信
-- **使用例**:
-  ```python
-  can_node = CANNode()
-  can_node.send_data(0x200, [0x01, 0x02, 0x03])
-  ```
 
 ### 2. pid_node
 - **説明**: ロボマスモーターのPID制御を行います。
@@ -23,43 +18,24 @@
   - 比例ゲインと不感帯の設定
   - トルク値の計算
   - PID現在値のトピック受信
-- **使用例**:
-  ```python
-  pid_node = PIDNode()
-  pid_node.set_target(100)
-  ```
 
 ### 3. planning_node
 - **説明**: ロボットの自動制御を行います。
 - **主な機能**:
   - 動作番号と特別動作番号に基づく制御
   - リミットスイッチの状態を利用した制御
-- **使用例**:
-  ```python
-  planning_node = PlanningNode()
-  planning_node.action_number = 2
-  planning_node.execute_action()
-  ```
+
 
 ### 4. web_socket_node
 - **説明**: WebSocket通信を行い、特別動作番号を操作します。
 - **主な機能**:
   - スマートフォンとPC間の通信
-- **使用例**:
-  ```python
-  node = WebSocketNode(host="0.0.0.0", port=8080)
-  node.start_server()
-  ```
+
 
 ### 5. dualshock3_node
 - **説明**: DualShock3コントローラを使用して動作番号を操作します。
 - **主な機能**:
-  - ボタン操作による動作番号の増減
-- **使用例**:
-  ```python
-  node = DualShock3Node()
-  rclpy.spin(node)
-  ```
+  - ボタン
 
 ## アクチュエータ・センサー一覧
 - **ロボマスモーター**: 1～5
@@ -95,6 +71,33 @@ chmod +x src/catchrobo_pkg/setup_and_launch.sh
 ```bash
 ./src/catchrobo_pkg/setup_and_launch.sh
 ```
+
+## CAN通信メッセージ一覧
+
+| CAN ID | 内容                   | データ構成                                       |
+| ------ | ---------------------- | ------------------------------------------------ |
+| 0x200  | ロボマス1–4 目標値送信 | [M1_H, M1_L, M2_H, M2_L, M3_H, M3_L, M4_H, M4_L] |
+| 0x1FF  | ロボマス5 目標値送信   | [M5_H, M5_L, 0, 0, 0, 0, 0, 0]                   |
+| 0x300  | 一般モーター1–3 目標値 | [G1_H, G1_L, G2_H, G2_L, G3_H, G3_L, 0, 0]       |
+| 0x400  | サーボ1–6 角度制御     | [S1, S2, S3, S4, S5, S6, 0, 0]                   |
+| 0x401  | サーボ7–12 角度制御    | [S7, S8, S9, S10, S11, S12, 0, 0]                |
+
+## CANデバイス設定
+
+1. USB–CAN アダプタ（例: `/dev/ttyACM0`）を slcan ドライバでバインド  
+   ```bash
+   sudo slcand -o -c -s8 /dev/ttyACM0 can0
+   ```
+2. インターフェースを有効化  
+   ```bash
+   sudo ip link set up can0
+   ```
+3. 動作確認  
+   ```bash
+   ifconfig can0
+   cansend can0 123#1122334455667788
+   candump can0
+   ```
 
 ## ライセンス
 このパッケージは、適切なライセンスの下で提供されます。詳細は`LICENSE`ファイルを参照してください。

@@ -1,6 +1,5 @@
 [console_scripts]
 can_node = catchrobo_pkg.can_node:main
 dualshock3_node = catchrobo_pkg.dualshock3_node:main
-pid_node = catchrobo_pkg.pid_node:main
 planning_node = catchrobo_pkg.planning_node:main
 web_socket_node = catchrobo_pkg.web_socket_node:main

@@ -17,7 +17,7 @@ import os
 
 
 # IPアドレスとポート設定
-IP_ADDRESS = '192.168.85.216'
+IP_ADDRESS = '192.168.6.212'
 PORT = 8080
 
 # UIファイル（`UI.txt`）のパス
