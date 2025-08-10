@@ -1,0 +1,20 @@
+[1.478s] Invoking command in '/home/altair/catchrobo/src/build/catchrobo_pkg': PYTHONPATH=/home/altair/catchrobo/src/build/catchrobo_pkg/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/altair/catchrobo/src/install/catchrobo_pkg/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/altair/catchrobo/src/build/catchrobo_pkg/build --no-deps symlink_data
+[2.069s] running develop
+[2.381s] running egg_info
+[2.401s] writing catchrobo_pkg.egg-info/PKG-INFO
+[2.401s] writing dependency_links to catchrobo_pkg.egg-info/dependency_links.txt
+[2.402s] writing entry points to catchrobo_pkg.egg-info/entry_points.txt
+[2.402s] writing requirements to catchrobo_pkg.egg-info/requires.txt
+[2.402s] writing top-level names to catchrobo_pkg.egg-info/top_level.txt
+[2.443s] reading manifest file 'catchrobo_pkg.egg-info/SOURCES.txt'
+[2.444s] writing manifest file 'catchrobo_pkg.egg-info/SOURCES.txt'
+[2.466s] running build_ext
+[2.466s] Creating /home/altair/catchrobo/src/install/catchrobo_pkg/lib/python3.10/site-packages/catchrobo-pkg.egg-link (link to .)
+[2.466s] Installing can_node script to /home/altair/catchrobo/src/install/catchrobo_pkg/lib/catchrobo_pkg
+[2.466s] Installing dualshock3_node script to /home/altair/catchrobo/src/install/catchrobo_pkg/lib/catchrobo_pkg
+[2.467s] Installing planning_node script to /home/altair/catchrobo/src/install/catchrobo_pkg/lib/catchrobo_pkg
+[2.467s] Installing web_socket_node script to /home/altair/catchrobo/src/install/catchrobo_pkg/lib/catchrobo_pkg
+[2.467s] 
+[2.467s] Installed /home/altair/catchrobo/src/build/catchrobo_pkg
+[2.467s] running symlink_data
+[2.547s] Invoked command in '/home/altair/catchrobo/src/build/catchrobo_pkg' returned '0': PYTHONPATH=/home/altair/catchrobo/src/build/catchrobo_pkg/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/altair/catchrobo/src/install/catchrobo_pkg/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/altair/catchrobo/src/build/catchrobo_pkg/build --no-deps symlink_data
