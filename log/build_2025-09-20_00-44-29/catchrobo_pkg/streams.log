@@ -1,0 +1,35 @@
+[3.119s] Invoking command in '/home/altair/catchrobo/src/catchrobo_pkg': PYTHONPATH=/home/altair/catchrobo/build/catchrobo_pkg/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/altair/catchrobo/install/catchrobo_pkg/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/catchrobo_pkg build --build-base /home/altair/catchrobo/build/catchrobo_pkg/build install --record /home/altair/catchrobo/build/catchrobo_pkg/install.log --single-version-externally-managed install_data
+[3.939s] running egg_info
+[4.038s] writing ../../build/catchrobo_pkg/catchrobo_pkg.egg-info/PKG-INFO
+[4.042s] writing dependency_links to ../../build/catchrobo_pkg/catchrobo_pkg.egg-info/dependency_links.txt
+[4.044s] writing entry points to ../../build/catchrobo_pkg/catchrobo_pkg.egg-info/entry_points.txt
+[4.047s] writing requirements to ../../build/catchrobo_pkg/catchrobo_pkg.egg-info/requires.txt
+[4.051s] writing top-level names to ../../build/catchrobo_pkg/catchrobo_pkg.egg-info/top_level.txt
+[4.212s] reading manifest file '../../build/catchrobo_pkg/catchrobo_pkg.egg-info/SOURCES.txt'
+[4.214s] writing manifest file '../../build/catchrobo_pkg/catchrobo_pkg.egg-info/SOURCES.txt'
+[4.214s] running build
+[4.214s] running build_py
+[4.214s] copying catchrobo_pkg/camera_node.py -> /home/altair/catchrobo/build/catchrobo_pkg/build/lib/catchrobo_pkg
+[4.215s] copying catchrobo_pkg/__init__.py -> /home/altair/catchrobo/build/catchrobo_pkg/build/lib/catchrobo_pkg
+[4.215s] copying catchrobo_pkg/serial_can_gui_node.py -> /home/altair/catchrobo/build/catchrobo_pkg/build/lib/catchrobo_pkg
+[4.215s] copying catchrobo_pkg/gamepad_node.py -> /home/altair/catchrobo/build/catchrobo_pkg/build/lib/catchrobo_pkg
+[4.215s] copying catchrobo_pkg/custom_controller_node.py -> /home/altair/catchrobo/build/catchrobo_pkg/build/lib/catchrobo_pkg
+[4.216s] running install
+[4.229s] running install_lib
+[4.292s] copying /home/altair/catchrobo/build/catchrobo_pkg/build/lib/catchrobo_pkg/serial_can_gui_node.py -> /home/altair/catchrobo/install/catchrobo_pkg/lib/python3.10/site-packages/catchrobo_pkg
+[4.292s] copying /home/altair/catchrobo/build/catchrobo_pkg/build/lib/catchrobo_pkg/serial_can_node.py -> /home/altair/catchrobo/install/catchrobo_pkg/lib/python3.10/site-packages/catchrobo_pkg
+[4.293s] copying /home/altair/catchrobo/build/catchrobo_pkg/build/lib/catchrobo_pkg/debug_gui_node.py -> /home/altair/catchrobo/install/catchrobo_pkg/lib/python3.10/site-packages/catchrobo_pkg
+[4.293s] byte-compiling /home/altair/catchrobo/install/catchrobo_pkg/lib/python3.10/site-packages/catchrobo_pkg/serial_can_gui_node.py to serial_can_gui_node.cpython-310.pyc
+[4.302s] running install_data
+[4.306s] copying resource/catchrobo_pkg -> /home/altair/catchrobo/install/catchrobo_pkg/share/ament_index/resource_index/packages
+[4.308s] copying package.xml -> /home/altair/catchrobo/install/catchrobo_pkg/share/catchrobo_pkg
+[4.310s] running install_egg_info
+[4.397s] removing '/home/altair/catchrobo/install/catchrobo_pkg/lib/python3.10/site-packages/catchrobo_pkg-0.0.0-py3.10.egg-info' (and everything under it)
+[4.397s] Copying ../../build/catchrobo_pkg/catchrobo_pkg.egg-info to /home/altair/catchrobo/install/catchrobo_pkg/lib/python3.10/site-packages/catchrobo_pkg-0.0.0-py3.10.egg-info
+[4.411s] running install_scripts
+[4.878s] Installing camera_node script to /home/altair/catchrobo/install/catchrobo_pkg/lib/catchrobo_pkg
+[4.878s] Installing custom_controller_node script to /home/altair/catchrobo/install/catchrobo_pkg/lib/catchrobo_pkg
+[4.878s] Installing gamepad_node script to /home/altair/catchrobo/install/catchrobo_pkg/lib/catchrobo_pkg
+[4.879s] Installing serial_can_gui_node script to /home/altair/catchrobo/install/catchrobo_pkg/lib/catchrobo_pkg
+[4.879s] writing list of installed files to '/home/altair/catchrobo/build/catchrobo_pkg/install.log'
+[4.920s] Invoked command in '/home/altair/catchrobo/src/catchrobo_pkg' returned '0': PYTHONPATH=/home/altair/catchrobo/build/catchrobo_pkg/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/altair/catchrobo/install/catchrobo_pkg/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/catchrobo_pkg build --build-base /home/altair/catchrobo/build/catchrobo_pkg/build install --record /home/altair/catchrobo/build/catchrobo_pkg/install.log --single-version-externally-managed install_data

@@ -25,6 +25,7 @@ setup(
             'gamepad_node = catchrobo_pkg.gamepad_node:main',
             'serial_can_gui_node = catchrobo_pkg.serial_can_gui_node:main',
             'camera_node = catchrobo_pkg.camera_node:main',
+            'custom_controller_node = catchrobo_pkg.custom_controller_node:main',
         ],
 
     },

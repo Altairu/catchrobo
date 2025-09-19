@@ -1,1 +1,0 @@
-/home/altair/catchrobo/src/catchrobo_pkg/setup.py
