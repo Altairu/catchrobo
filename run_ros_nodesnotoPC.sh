@@ -6,7 +6,7 @@ ROS_SETUP="source /opt/ros/humble/setup.bash; source $WS_DIR/install/setup.bash"
 
 # build
 source /opt/ros/humble/setup.bash
-colcon build --symlink-install
+#colcon build --symlink-install
 source install/setup.bash
 
 # ...existing code...
