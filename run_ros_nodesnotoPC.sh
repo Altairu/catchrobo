@@ -9,6 +9,7 @@ source /opt/ros/humble/setup.bash
 colcon build --symlink-install
 source install/setup.bash
 
+# ...existing code...
+
 # gamepad_node を新しいタブで実行
-wezterm cli spawn --cwd "$WS_DIR" -- \
-  bash -lc "$ROS_SETUP; ros2 run catchrobo_pkg gamepad_node; exec bash"
+gnome-terminal -- bash -c "$ROS_SETUP; ros2 run catchrobo_pkg gamepad_node; exec bash"
