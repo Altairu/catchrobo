@@ -16,7 +16,7 @@ class GamepadNode(Node):
         self.pub_cmdspec = self.create_publisher(Int32MultiArray, 'cmd_spec', 10)
 
         # ゲームパッドデバイス（必要に応じて変更）
-        device_path = "/dev/input/event16"
+        device_path = "/dev/input/event13"
         try:
             self.dev = evdev.InputDevice(device_path)
             self.dev.grab()  # 他のアプリに入力を奪われないようにする
@@ -70,7 +70,7 @@ class GamepadNode(Node):
         m5 = int(self._normalize_axis(self.axes[2]) * 1000)   # 右X
 
         if self.buttons[305]:       # B
-            self.last_motor4 = 1000
+            self.last_motor4 = 5000
         elif self.buttons[304]:     # A
             self.last_motor4 = 0
         m4 = self.last_motor4
