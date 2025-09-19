@@ -1,0 +1,20 @@
+[1.023s] Invoking command in '/home/altair/catchrobo/build/catchrobo_pkg': PYTHONPATH=/home/altair/catchrobo/build/catchrobo_pkg/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/altair/catchrobo/install/catchrobo_pkg/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/altair/catchrobo/build/catchrobo_pkg/build --no-deps symlink_data
+[1.445s] running develop
+[1.696s] running egg_info
+[1.715s] writing catchrobo_pkg.egg-info/PKG-INFO
+[1.715s] writing dependency_links to catchrobo_pkg.egg-info/dependency_links.txt
+[1.716s] writing entry points to catchrobo_pkg.egg-info/entry_points.txt
+[1.716s] writing requirements to catchrobo_pkg.egg-info/requires.txt
+[1.716s] writing top-level names to catchrobo_pkg.egg-info/top_level.txt
+[1.756s] reading manifest file 'catchrobo_pkg.egg-info/SOURCES.txt'
+[1.756s] writing manifest file 'catchrobo_pkg.egg-info/SOURCES.txt'
+[1.777s] running build_ext
+[1.777s] Creating /home/altair/catchrobo/install/catchrobo_pkg/lib/python3.10/site-packages/catchrobo-pkg.egg-link (link to .)
+[1.777s] Installing camera_node script to /home/altair/catchrobo/install/catchrobo_pkg/lib/catchrobo_pkg
+[1.777s] Installing debug_gui_node script to /home/altair/catchrobo/install/catchrobo_pkg/lib/catchrobo_pkg
+[1.777s] Installing gamepad_node script to /home/altair/catchrobo/install/catchrobo_pkg/lib/catchrobo_pkg
+[1.777s] Installing serial_can_node script to /home/altair/catchrobo/install/catchrobo_pkg/lib/catchrobo_pkg
+[1.778s] 
+[1.778s] Installed /home/altair/catchrobo/build/catchrobo_pkg
+[1.778s] running symlink_data
+[1.855s] Invoked command in '/home/altair/catchrobo/build/catchrobo_pkg' returned '0': PYTHONPATH=/home/altair/catchrobo/build/catchrobo_pkg/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/altair/catchrobo/install/catchrobo_pkg/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/altair/catchrobo/build/catchrobo_pkg/build --no-deps symlink_data

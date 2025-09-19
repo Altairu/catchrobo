@@ -1,13 +1,22 @@
 #!/bin/bash
+set -e
 
-# ROS 2環境のセットアップ
-colcon build
+WS_DIR="/home/altair/catchrobo"
+ROS_SETUP="source /opt/ros/humble/setup.bash; source $WS_DIR/install/setup.bash"
+
+# build
 source /opt/ros/humble/setup.bash
+colcon build --symlink-install
 source install/setup.bash
 
-# 各ノードを新しいターミナルウィンドウで実行
-gnome-terminal --tab --title="can_node" -- bash -c "source /opt/ros/humble/setup.bash; source install/setup.bash; ros2 run catchrobo_pkg can_node; exec bash"
-gnome-terminal --tab --title="pid_node" -- bash -c "source /opt/ros/humble/setup.bash; source install/setup.bash; ros2 run catchrobo_pkg pid_node; exec bash"
-gnome-terminal --tab --title="planning_node" -- bash -c "source /opt/ros/humble/setup.bash; source install/setup.bash; ros2 run catchrobo_pkg planning_node; exec bash"
-gnome-terminal --tab --title="web_socket_node" -- bash -c "source /opt/ros/humble/setup.bash; source install/setup.bash; ros2 run catchrobo_pkg web_socket_node; exec bash"
-gnome-terminal --tab --title="dualshock3_node" -- bash -c "source /opt/ros/humble/setup.bash; source install/setup.bash; ros2 run catchrobo_pkg dualshock3_node; exec bash"
+# gamepad_node を新しいタブで実行
+wezterm cli spawn --cwd "$WS_DIR" -- \
+  bash -lc "$ROS_SETUP; ros2 run catchrobo_pkg gamepad_node; exec bash"
+
+# serial_can_gui_node を新しいタブで実行
+wezterm cli spawn --cwd "$WS_DIR" -- \
+  bash -lc "$ROS_SETUP; ros2 run catchrobo_pkg serial_can_gui_node; exec bash"
+
+# camera_node を新しいタブで実行
+wezterm cli spawn --cwd "$WS_DIR" -- \
+   bash -lc "$ROS_SETUP; ros2 run catchrobo_pkg camera_node; exec bash"

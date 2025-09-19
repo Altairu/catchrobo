@@ -9,11 +9,9 @@ setup.py
 ../../build/catchrobo_pkg/catchrobo_pkg.egg-info/top_level.txt
 ../../build/catchrobo_pkg/catchrobo_pkg.egg-info/zip-safe
 catchrobo_pkg/__init__.py
-catchrobo_pkg/can_node.py
-catchrobo_pkg/dualshock3_node.py
-catchrobo_pkg/pid_node.py
-catchrobo_pkg/planning_node.py
-catchrobo_pkg/web_socket_node.py
+catchrobo_pkg/camera_node.py
+catchrobo_pkg/gamepad_node.py
+catchrobo_pkg/serial_can_gui_node.py
 catchrobo_pkg.egg-info/PKG-INFO
 catchrobo_pkg.egg-info/SOURCES.txt
 catchrobo_pkg.egg-info/dependency_links.txt

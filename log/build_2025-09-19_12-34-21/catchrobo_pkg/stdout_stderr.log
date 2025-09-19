@@ -1,0 +1,20 @@
+running develop
+running egg_info
+writing catchrobo_pkg.egg-info/PKG-INFO
+writing dependency_links to catchrobo_pkg.egg-info/dependency_links.txt
+writing entry points to catchrobo_pkg.egg-info/entry_points.txt
+writing requirements to catchrobo_pkg.egg-info/requires.txt
+writing top-level names to catchrobo_pkg.egg-info/top_level.txt
+reading manifest file 'catchrobo_pkg.egg-info/SOURCES.txt'
+writing manifest file 'catchrobo_pkg.egg-info/SOURCES.txt'
+running build_ext
+Creating /home/altair/catchrobo/install/catchrobo_pkg/lib/python3.10/site-packages/catchrobo-pkg.egg-link (link to .)
+Installing camera_node script to /home/altair/catchrobo/install/catchrobo_pkg/lib/catchrobo_pkg
+Installing debug_gui_node script to /home/altair/catchrobo/install/catchrobo_pkg/lib/catchrobo_pkg
+Installing gamepad_node script to /home/altair/catchrobo/install/catchrobo_pkg/lib/catchrobo_pkg
+Installing serial_can_node script to /home/altair/catchrobo/install/catchrobo_pkg/lib/catchrobo_pkg
+
+Installed /home/altair/catchrobo/build/catchrobo_pkg
+running symlink_data
+symbolically linking /home/altair/catchrobo/build/catchrobo_pkg/resource/catchrobo_pkg -> /home/altair/catchrobo/install/catchrobo_pkg/share/ament_index/resource_index/packages
+symbolically linking /home/altair/catchrobo/build/catchrobo_pkg/package.xml -> /home/altair/catchrobo/install/catchrobo_pkg/share/catchrobo_pkg
