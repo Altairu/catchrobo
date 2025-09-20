@@ -57,7 +57,7 @@ class GamepadNode(Node):
         m5 = int(self._normalize_axis(self.axes[2]) * 1000)
 
         if self.buttons[305]:
-            self.last_motor4 = 1000
+            self.last_motor4 = 5000
         elif self.buttons[304]:
             self.last_motor4 = 0
         m4 = self.last_motor4
