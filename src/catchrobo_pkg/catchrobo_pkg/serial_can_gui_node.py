@@ -153,7 +153,7 @@ class App(tk.Tk):
     def __init__(self):
         super().__init__()
         self.title("Serial+CAN GUI")
-        self.geometry("700x500")
+        self.geometry("700x560")
         self.option_add('*Font', ('Segoe UI', 11))
 
         # 状態変数
@@ -211,6 +211,18 @@ class App(tk.Tk):
         self.lbl_spec2 = ttk.Label(frm_cmd, text="spec2=0"); self.lbl_spec2.pack(anchor="w")
         self.lbl_echo = ttk.Label(frm_cmd, text="---", foreground="gray"); self.lbl_echo.pack(anchor="w")
 
+        # --- 送信電圧表示 ---
+        frm_v = ttk.LabelFrame(self, text="RoboMasterへ送信している電圧", padding=10)
+        frm_v.pack(fill="x", padx=10, pady=5)
+        # 5ch分のラベルを用意
+        self.volt_labels = []
+        headers = ["CH1", "CH2", "CH3", "CH4", "CH5"]
+        for i, h in enumerate(headers):
+            ttk.Label(frm_v, text=f"{h}:").grid(row=i, column=0, sticky="e", padx=4, pady=2)
+            lbl = ttk.Label(frm_v, text="0")
+            lbl.grid(row=i, column=1, sticky="w")
+            self.volt_labels.append(lbl)
+
     # ===== UIイベント =====
     def _refresh_ports(self):
         ports = [p.device for p in list_ports.comports()]
@@ -243,7 +255,10 @@ class App(tk.Tk):
         self.node.setup_can(port, canif)
 
     # ===== 値更新 =====
-    def update_motor_labels(self, currents): pass
+    def update_motor_labels(self, currents):
+        # currentsに受け取った5ch分の電圧(または指令値)を表示
+        for i in range(min(5, len(currents))):
+            self.volt_labels[i].config(text=str(int(currents[i])))
     def update_cmdspec(self, cmd1, spec1, cmd2, spec2):
         self.lbl_cmd1.config(text=f"cmd1={cmd1}")
         self.lbl_spec1.config(text=f"spec1={spec1}")

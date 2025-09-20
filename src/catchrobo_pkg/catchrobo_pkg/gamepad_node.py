@@ -14,7 +14,7 @@ class GamepadNode(Node):
         self.pub_motor = self.create_publisher(Int16MultiArray, 'motor_cmd', 10)
         self.pub_cmdspec1 = self.create_publisher(Int32MultiArray, 'cmd_spec1', 10)
 
-        device_path = "/dev/input/event13"
+        device_path = "/dev/input/event16"
         try:
             self.dev = evdev.InputDevice(device_path)
             self.dev.grab()
